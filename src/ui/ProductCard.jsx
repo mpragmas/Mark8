@@ -13,10 +13,10 @@ function ProductCard({ item }) {
         <div className="space-y-2">
           <p className="text-xs">{item.name}</p>
           <div className="flex items-center gap-2">
-            <p className="text-xs text-accent">{item.price}</p>
-            <p className="text-xs text-lightDark line-through">
-              {item.normalPrice}
+            <p className="text-xs text-accent">
+              {item.discountPrice ? item.discountPrice : item.price}
             </p>
+            <p className="text-xs text-lightDark line-through">{item.price}</p>
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-3">
@@ -24,7 +24,12 @@ function ProductCard({ item }) {
             <AiOutlineShoppingCart />
           </p>
           <p className="rounded-md border-2 border-light p-1 sm:p-2">
-            <CiHeart />
+            <CiHeart
+              onClick={() => {
+                console.log(" im clicked");
+                console.log(getProducts());
+              }}
+            />
           </p>
         </div>
       </div>

@@ -41,7 +41,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route index element={<Navigate replace to="login" />} />
+          <Route index element={<Navigate replace to="home" />} />
           <Route path="home" element={<Products />} />
           <Route path="Store" element={<Store />} />
           <Route path="products/saved" element={<SavedProducts />} />

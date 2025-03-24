@@ -8,93 +8,95 @@ import { BiLinkExternal } from "react-icons/bi";
 import StoreHeader from "../../ui/StoreHeader";
 
 import ProductCard from "../../ui/ProductCard";
+import { fetchProducts } from "../../services/apiProduct";
+import { useEffect, useState } from "react";
 
-const productDeatails = [
-  {
-    id: 1,
-    name: "product 1",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 2,
-    name: "product 2",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 3,
-    name: "product 3",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 4,
-    name: "product 4",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 5,
-    name: "product 5",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 6,
-    name: "product 6",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 7,
-    name: "product 7",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 8,
-    name: "product 8",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 9,
-    name: "product 9",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 10,
-    name: "product 10",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 11,
-    name: "product 10",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-  {
-    id: 12,
-    name: "product 10",
-    price: "9,000 Rwf",
-    normalPrice: "12,000 Rwf",
-    img: Account,
-  },
-];
+// const productDeatails = [
+//   {
+//     id: 1,
+//     name: "product 1",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 2,
+//     name: "product 2",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 3,
+//     name: "product 3",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 4,
+//     name: "product 4",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 5,
+//     name: "product 5",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 6,
+//     name: "product 6",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 7,
+//     name: "product 7",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 8,
+//     name: "product 8",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 9,
+//     name: "product 9",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 10,
+//     name: "product 10",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 11,
+//     name: "product 10",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+//   {
+//     id: 12,
+//     name: "product 10",
+//     price: "9,000 Rwf",
+//     normalPrice: "12,000 Rwf",
+//     img: Account,
+//   },
+// ];
 
 const topStore = [
   {
@@ -159,11 +161,27 @@ const topStore = [
 ];
 
 function ProductItems() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProducts() {
+      const data = await fetchProducts();
+      setProducts(data.data.document);
+      setLoading(false);
+    }
+    loadProducts();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
+  console.log(products);
+
   return (
     <div className="mt-5 grid grid-cols-custom-1fr gap-3 sm:grid-cols-custom-75-25">
       <div>
         <div className="grid grid-cols-custom-1fr-1fr gap-3 xl:grid-cols-custom-1fr-1fr-1fr">
-          {productDeatails.map((item) => (
+          {products.map((item) => (
             <ProductCard key={item.id} item={item} />
           ))}
         </div>
