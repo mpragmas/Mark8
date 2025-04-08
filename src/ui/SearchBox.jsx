@@ -1,5 +1,6 @@
 import { IoSearch } from "react-icons/io5";
 import { LuSettings2 } from "react-icons/lu";
+import { useProducts } from "../components/Products/useProducts";
 
 const searchBoxText = [
   { id: 1, name: "All" },
@@ -15,6 +16,14 @@ function SearchBox({
   quantity,
   placeholder,
 }) {
+  const { data } = useProducts();
+
+  const products = data?.data.document;
+
+  const categories = [...new Set(products?.map((product) => product.category))];
+
+  console.log(categories);
+
   return (
     <div
       className={`mx-4 mt-20 rounded-2xl ${name === "products" ? "bg-dark" : "bg-[#F7F8FB]"} p-4 text-center sm:mx-8 sm:mt-24 sm:p-6 lg:mx-16`}
@@ -57,14 +66,19 @@ function SearchBox({
         />
       </div>
       <div className="mt-3 hidden space-x-3 text-lightDark md:block">
-        {searchBoxText.map((text) => (
-          <p
-            key={text.id}
-            className="inline-block cursor-pointer rounded-xl border border-[#495D69] px-3 py-1 text-xs hover:border-light active:border-light"
-          >
-            {text.name}
-          </p>
-        ))}
+        <p className="inline-block cursor-pointer rounded-xl border border-[#495D69] px-3 py-1 text-xs hover:border-light active:border-light">
+          All
+        </p>
+        {categories.length === 0
+          ? ""
+          : categories?.map((text) => (
+              <p
+                key={text}
+                className="inline-block cursor-pointer rounded-xl border border-[#495D69] px-3 py-1 text-xs hover:border-light active:border-light"
+              >
+                {text}
+              </p>
+            ))}
       </div>
     </div>
   );

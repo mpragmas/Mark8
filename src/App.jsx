@@ -9,6 +9,10 @@ import SavedProducts from "./components/Products/SavedProducts";
 import ProductDetails from "./components/Products/ProductDetails";
 import Login from "./components/auth/Login";
 import NotFound from "./ui/NotFound";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./ui/ProtectedRoute";
+import Signup from "./components/auth/Signup";
 
 // function App() {
 //   useEffect(() => {
@@ -26,6 +30,15 @@ import NotFound from "./ui/NotFound";
 
 //   </BrowserRouter>
 // }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
+
 function App() {
   useEffect(() => {
     AOS.init({
@@ -38,19 +51,48 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route index element={<Navigate replace to="home" />} />
-          <Route path="home" element={<Products />} />
-          <Route path="Store" element={<Store />} />
-          <Route path="products/saved" element={<SavedProducts />} />
-          <Route path="products/details" element={<ProductDetails />} />
-        </Route>
-        <Route path="login" element={<Login />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate replace to="home" />} />
+            <Route path="home" element={<Products />} />
+            <Route path="Store" element={<Store />} />
+            <Route path="products/saved" element={<SavedProducts />} />
+            <Route path="products/details" element={<ProductDetails />} />
+          </Route>
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            // backgroundColor: "var(--color-grey-0)",
+            // color: "var(--color-grey-700)",
+          },
+        }}
+      />
+    </QueryClientProvider>
   );
 }
 

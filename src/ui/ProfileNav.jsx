@@ -6,7 +6,8 @@ import { RiErrorWarningLine } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { PiHeadsetFill } from "react-icons/pi";
 import { useOutsideClick } from "../hooks/useOutsideClick";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useUser } from "../components/auth/useUser";
 
 const profileNav = [
   {
@@ -37,7 +38,16 @@ const profileNav = [
 ];
 
 function AccountNav({ handleShowProfileNav }) {
+  const navigate = useNavigate();
   const ref = useOutsideClick(handleShowProfileNav);
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("login");
+  }
+
+  const { data: user, isLoading } = useUser();
+
   return (
     <div
       ref={ref}
@@ -47,8 +57,8 @@ function AccountNav({ handleShowProfileNav }) {
       <div className="flex items-center gap-3 px-3 lg:px-5 lg:py-6">
         <img src={Account} className="h-[50px] w-[50px] bg-[#C1CF167A]" />
         <div>
-          <h1 className="text-sm">Yves Honnore B.</h1>
-          <p className="text-sm text-lightDark">yveshonnore@examaple.rw</p>
+          <h1 className="text-sm">{user.data.name}</h1>
+          <p className="text-sm text-lightDark">{user.data.email}</p>
         </div>
       </div>
       <div className="ml-3 mt-3 w-[90%] border border-b border-light lg:ml-5 lg:mt-1"></div>
@@ -63,10 +73,13 @@ function AccountNav({ handleShowProfileNav }) {
       </div>
       <div className="mb-6 ml-5 w-[90%] border border-b border-light"></div>
 
-      <a className="mb-4 flex items-center gap-2 px-5">
+      <div className="mb-4 flex items-center gap-2 px-5">
         <HiOutlineLogout />
-        <span>Logout</span>
-      </a>
+        {/* <NavLink to="/login">Logout</NavLink> */}
+        <p onClick={handleLogout} className="cursor-pointer">
+          Logout
+        </p>
+      </div>
     </div>
   );
 }

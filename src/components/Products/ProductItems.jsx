@@ -1,187 +1,49 @@
-import { RiStoreLine } from "react-icons/ri";
+import ProductCard from "../../ui/ProductCard";
 import Account from "../../assets/account.png";
-
+import StoreHeader from "../../ui/StoreHeader";
+import { RiStoreLine } from "react-icons/ri";
 import { IoSearch } from "react-icons/io5";
 import { LuSettings2 } from "react-icons/lu";
 import { IoIosArrowDown } from "react-icons/io";
 import { BiLinkExternal } from "react-icons/bi";
-import StoreHeader from "../../ui/StoreHeader";
-
-import ProductCard from "../../ui/ProductCard";
-import { fetchProducts } from "../../services/apiProduct";
-import { useEffect, useState } from "react";
-
-// const productDeatails = [
-//   {
-//     id: 1,
-//     name: "product 1",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 2,
-//     name: "product 2",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 3,
-//     name: "product 3",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 4,
-//     name: "product 4",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 5,
-//     name: "product 5",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 6,
-//     name: "product 6",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 7,
-//     name: "product 7",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 8,
-//     name: "product 8",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 9,
-//     name: "product 9",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 10,
-//     name: "product 10",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 11,
-//     name: "product 10",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-//   {
-//     id: 12,
-//     name: "product 10",
-//     price: "9,000 Rwf",
-//     normalPrice: "12,000 Rwf",
-//     img: Account,
-//   },
-// ];
-
-const topStore = [
-  {
-    id: 1,
-    name: "Awesome Shop 1",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 2,
-    name: "Awesome Shop 2",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 3,
-    name: "Awesome Shop 3",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 4,
-    name: "Awesome Shop 4",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 5,
-    name: "Awesome Shop 5",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 6,
-    name: "Awesome Shop 6",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 7,
-    name: "Awesome Shop 7",
-    img: Account,
-  },
-  {
-    id: 8,
-    name: "Awesome Shop 8",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 9,
-    name: "Awesome Shop 9",
-    numProd: "134 Products",
-    img: Account,
-  },
-  {
-    id: 10,
-    name: "Awesome Shop 10",
-    numProd: "134 Products",
-    img: Account,
-  },
-];
+import { useProducts } from "./useProducts";
+import { useShops } from "./useShops";
+import { useShop } from "./useShop";
 
 function ProductItems() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [products, setProducts] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadProducts() {
-      const data = await fetchProducts();
-      setProducts(data.data.document);
-      setLoading(false);
-    }
-    loadProducts();
-  }, []);
+  // useEffect(() => {
+  //   async function loadProducts() {
+  //     const data = await fetchProducts();
+  //     setProducts(data.data.document);
+  //     setLoading(false);
+  //   }
+  //   loadProducts();
+  // }, []);
 
-  if (loading) return <p>Loading...</p>;
+  // console.log(products);
 
-  console.log(products);
+  const { isLoading: isLoadingProducts, data: product } = useProducts();
+  const { isLoading: isLoadingShops, data: allShops } = useShops();
+
+  const products = product?.data.document;
+  const shops = allShops?.data.document;
+
+  //console.log(shops);
+
+  if (isLoadingProducts) return <p>Loading...</p>;
+  if (isLoadingShops) return <p>Loading...</p>;
+
+  if (products?.length === 0)
+    return <p className="text-center">No products found 😭</p>;
 
   return (
     <div className="mt-5 grid grid-cols-custom-1fr gap-3 sm:grid-cols-custom-75-25">
       <div>
         <div className="grid grid-cols-custom-1fr-1fr gap-3 xl:grid-cols-custom-1fr-1fr-1fr">
-          {products.map((item) => (
+          {products?.map((item) => (
             <ProductCard key={item.id} item={item} />
           ))}
         </div>
@@ -219,13 +81,8 @@ function ProductItems() {
         </div>
         <div className="mt-5 w-full pl-2 sm:pl-3 lg:pl-6">
           <ul className="space-y-5">
-            {topStore.map((item) => (
-              <StoreHeader
-                key={item.id}
-                name={item.name}
-                numProd={item.numProd}
-                img={item.img}
-              />
+            {shops.map((item) => (
+              <StoreHeader key={item.id} item={item} />
             ))}
           </ul>
         </div>

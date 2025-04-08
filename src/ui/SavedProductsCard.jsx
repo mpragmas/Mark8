@@ -9,7 +9,7 @@ import {
 } from "../components/Products/savedSlice";
 //import Account from "../../assets/account.png";
 
-function ProductCard({ item }) {
+function SavedProductCard({ item }) {
   const dispatch = useDispatch();
 
   const { id, name, price, discountPrice } = item;
@@ -28,7 +28,6 @@ function ProductCard({ item }) {
     };
     isInCart ? dispatch(deleteItem(id)) : dispatch(addItem(newItem));
   }
-
   function handleAddToSaved() {
     const newSaved = {
       itemId: id,
@@ -73,4 +72,4 @@ function ProductCard({ item }) {
   );
 }
 
-export default ProductCard;
+export default SavedProductCard;
