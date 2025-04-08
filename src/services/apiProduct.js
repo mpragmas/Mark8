@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { URL } from "../../util/apiLink";
 
 export async function fetchProducts() {
   try {
@@ -11,7 +12,7 @@ export async function fetchProducts() {
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/v1/products", {
+    const res = await fetch(`${URL}api/v1/products`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -25,7 +26,7 @@ export async function fetchProducts() {
 }
 export async function fetchAllShops() {
   try {
-    const res = await fetch("http://localhost:5000/api/v1/shops");
+    const res = await fetch(`${URL}api/v1/shops`);
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
     const data = await res.json();
     return data;
@@ -37,7 +38,7 @@ export async function fetchShop(id) {
   try {
     if (!id) throw new Error("Shop ID is required");
 
-    const res = await fetch(`http://localhost:5000/api/v1/shops/${id}`);
+    const res = await fetch(`${URL}api/v1/shops/${id}`);
 
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
 
